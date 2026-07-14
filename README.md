@@ -76,5 +76,4 @@ Problem descriptions belong to LeetCode. This repository only contains my person
 ## Profile
 
 You can view my LeetCode profile here:
-
 https://leetcode.com/u/Shehryar67/
