@@ -1,51 +1,22 @@
-class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.size = [1] * n
-
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
-
-    def union(self, a, b):
-        rootA = self.find(a)
-        rootB = self.find(b)
-
-        if rootA == rootB:
-            return
-
-        if self.size[rootA] < self.size[rootB]:
-            rootA, rootB = rootB, rootA
-
-        self.parent[rootB] = rootA
-        self.size[rootA] += self.size[rootB]
-
-
 class Solution(object):
     def longestConsecutive(self, nums):
         """
         :type nums: List[int]
         :rtype: int
         """
-        if not nums:
-            return 0
+        num_set = set(nums)
+        longest = 0
 
-        nums = list(set(nums))
-        
-        index = {}
-        for i, num in enumerate(nums):
-            index[num] = i
+        for num in num_set:
+            # Only start counting if num is the beginning of a sequence
+            if num - 1 not in num_set:
+                length = 1
+                current = num
 
-        uf = UnionFind(len(nums))
+                while current + 1 in num_set:
+                    current += 1
+                    length += 1
 
-        for num in nums:
-            if num + 1 in index:
-                uf.union(index[num], index[num + 1])
-        
-        longest = 1
-        for i in range(len(nums)):
-            root = uf.find(i)
-            longest = max(longest, uf.size[root])
+                longest = max(longest, length)
 
         return longest
