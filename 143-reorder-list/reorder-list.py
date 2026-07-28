@@ -9,38 +9,27 @@ class Solution(object):
         :type head: Optional[ListNode]
         :rtype: None Do not return anything, modify head in-place instead.
         """
-        if not head or not head.next:
-            return
-
-        # Find the middle node
-        slow = head
-        fast = head
-
-        while fast.next and fast.next.next:
-            slow = slow.next
-            fast = fast.next.next
-
-        # Reverse the 2nd half of the list
-        second = slow.next
-        slow.next = None
-
-        prev = None
-        while second:
-            nxt = second.next
-            second.next = prev
-            prev = second
-            second = nxt
-
-        # Now merge both 
-        first = head
-        second = prev
-
-        while second:
-            temp1 = first.next
-            temp2 = second.next
-
-            first.next = second
-            second.next = temp1
-
-            first = temp1
-            second = temp2
+        if not head:
+            return 
+        
+        nodes = []
+        current = head
+        while current:
+            nodes.append(current)
+            current = current.next
+            
+        
+        left = 0
+        right = len(nodes) - 1
+        
+        while left < right:
+           
+            nodes[left].next = nodes[right]
+            left += 1
+            
+            if left == right:
+                break
+                
+            nodes[right].next = nodes[left]
+            right -= 1
+        nodes[left].next = None
