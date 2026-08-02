@@ -10,8 +10,8 @@ class Solution(object):
         :type k: int
         :rtype: Optional[ListNode]
         """
-        if not head:
-            return None
+        if not head or k == 1:
+            return head
 
         nodes = []
 
@@ -19,18 +19,18 @@ class Solution(object):
             nodes.append(head)
             head = head.next
 
-        for i in range(0, len(nodes) - k + 1, k):
-            steps = k
+        n = len(nodes)
+
+        for i in range(0, n - k + 1, k):
             first = i
-            last = i + steps - 1
+            last = i + k - 1
 
             while first < last:
                 nodes[first], nodes[last] = nodes[last], nodes[first]
                 first += 1
                 last -= 1
-                steps -= 1
 
-        for i in range(len(nodes) - 1):
+        for i in range(n - 1):
             nodes[i].next = nodes[i + 1]
 
         nodes[-1].next = None
