@@ -13,25 +13,22 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        def dfs(node):
-            if node is None:
+        if root is None:
                 return None
 
             # If current node is p or q, return it
-            if node == p or node == q:
-                return node
+        if root == p or root == q:
+            return root
 
-            left = dfs(node.left)
-            right = dfs(node.right)
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
 
-            # p and q found in different subtrees
-            if left and right:
-                return node
+        # p and q found in different subtrees
+        if left and right:
+            return root
 
-            # Otherwise, propagate whichever side found something
-            if left:
-                return left
+        # Otherwise, propagate whichever side found something
+        if left:
+            return left
 
-            return right
-
-        return dfs(root)
+        return right
