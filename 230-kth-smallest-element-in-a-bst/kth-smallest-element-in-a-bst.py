@@ -13,18 +13,14 @@ class Solution(object):
         """
         nodes = []
 
-        def addNodes(root):
-            q = deque([root])
-            while q:
-                node = q.popleft()
-                nodes.append(node.val)
-                
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
+        def dfs(node):
+            if not node:
+                return
 
-        addNodes(root)
+            nodes.append(node.val)
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
         nodes.sort()
-
-        return nodes[k-1]
+        return nodes[k - 1]
