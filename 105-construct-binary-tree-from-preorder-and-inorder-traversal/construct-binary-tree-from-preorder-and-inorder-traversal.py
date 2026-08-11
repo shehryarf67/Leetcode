@@ -5,34 +5,41 @@
 #         self.left = left
 #         self.right = right
 class Solution(object):
+    pre_index = 0
     def buildTree(self, preorder, inorder):
         """
         :type preorder: List[int]
         :type inorder: List[int]
         :rtype: Optional[TreeNode]
         """
-        if not preorder:
-            return None
+        # value -> index in inorder
+        inorder_index = {}
 
-        # First preorder element is always the root
-        root_val = preorder[0]
-        root = TreeNode(root_val)
+        for i, val in enumerate(inorder):
+            inorder_index[val] = i
 
-        # Find root in inorder
-        mid = inorder.index(root_val)
 
-        # Everything left of mid belongs to left subtree
-        root.left = self.buildTree(
-            preorder[1:mid + 1],
-            inorder[:mid]
-        )
+        def build(left, right):
+            # No nodes in this inorder range
+            if left > right:
+                return None
 
-        # Everything right of mid belongs to right subtree
-        root.right = self.buildTree(
-            preorder[mid + 1:],
-            inorder[mid + 1:]
-        )
+            # Preorder gives us the next root
+            root_val = preorder[self.pre_index]
+            self.pre_index += 1
 
-        return root
+            root = TreeNode(root_val)
 
-        # Also a hashmap solution. 
+            # Find root's position in inorder in O(1)
+            mid = inorder_index[root_val]
+
+            # Build left subtree first because preorder is:
+            # Root -> Left -> Right
+            root.left = build(left, mid - 1)
+
+            # Then build right subtree
+            root.right = build(mid + 1, right)
+
+            return root
+
+        return build(0, len(inorder) - 1)
